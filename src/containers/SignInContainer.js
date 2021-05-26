@@ -1,6 +1,6 @@
 import SignIn from "../components/Auth/SignIn";
 import { connect } from "react-redux";
-import { signInUser } from "../redux/auth/auth.actions";
+import { removeErrorMessage, signInUser } from "../redux/auth/auth.actions";
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
@@ -9,6 +9,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   signInUser: (user) => dispatch(signInUser(user)),
+  removeErrorMessage: () => dispatch(removeErrorMessage()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

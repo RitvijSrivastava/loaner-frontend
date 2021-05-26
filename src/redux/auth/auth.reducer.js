@@ -8,11 +8,13 @@ import {
   SIGN_UP_FAILURE,
   SIGN_IN_FAILURE,
   SIGN_OUT_FAILURE,
+  REMOVE_ERROR_MESSAGE,
 } from "./auth.types";
 
 const initialState = {
   loading: false,
   user: null,
+  status: null,
   error: "",
 };
 
@@ -25,6 +27,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         loading: true,
         user: null,
+        status: null,
         error: "",
       };
     case SIGN_UP_SUCCESS:
@@ -32,7 +35,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        user: "SUCCESS",
+        status: "SUCCESS",
         error: "",
       };
     case SIGN_IN_SUCCESS:
@@ -49,7 +52,13 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         user: null,
+        status: "FAILURE",
         error: action.payload,
+      };
+    case REMOVE_ERROR_MESSAGE:
+      return {
+        ...state,
+        error: "",
       };
     default:
       return state;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API } from "../../backend";
+import { setUser } from "../dashboard/dashboard.actions";
 import {
   SIGN_UP_REQUEST,
   SIGN_IN_REQUEST,
@@ -10,6 +11,7 @@ import {
   SIGN_UP_FAILURE,
   SIGN_IN_FAILURE,
   SIGN_OUT_FAILURE,
+  REMOVE_ERROR_MESSAGE,
 } from "./auth.types";
 
 const signUpRequest = () => {
@@ -70,6 +72,17 @@ const signOutFailure = (errorMsg) => {
   };
 };
 
+const removeErrorMessageSuccess = () => {
+  return {
+    type: REMOVE_ERROR_MESSAGE,
+  };
+};
+
+/**
+ *  Sign up user.
+ * @param {object} user - User Object
+ * @returns void
+ */
 export const signUpUser = (user) => {
   return (dispatch) => {
     dispatch(signUpRequest());
@@ -95,6 +108,11 @@ export const signUpUser = (user) => {
   };
 };
 
+/**
+ * Sign In user. Set token in localstorage and add user to redux store.
+ * @param {object} user - User object
+ * @returns void
+ */
 export const signInUser = (user) => {
   return (dispatch) => {
     dispatch(signInRequest());
@@ -113,6 +131,7 @@ export const signInUser = (user) => {
           if (typeof window !== undefined) {
             localStorage.setItem("jwt", JSON.stringify(data.token));
           }
+          dispatch(setUser(data.user));
           dispatch(signInSuccess(data.user));
         }
       })
@@ -123,7 +142,11 @@ export const signInUser = (user) => {
   };
 };
 
-export const sigOutUser = () => {
+/**
+ * Sign out user
+ * @returns void
+ */
+export const signOutUser = () => {
   return (dispatch) => {
     dispatch(signOutRequest());
     axios
@@ -145,5 +168,15 @@ export const sigOutUser = () => {
         const errorMsg = error.response.data.error;
         dispatch(signOutFailure(errorMsg));
       });
+  };
+};
+
+/**
+ * Remove error message. This is done to prevent errors popping up on refresh/reload.
+ * @returns void
+ */
+export const removeErrorMessage = () => {
+  return (dispatch) => {
+    dispatch(removeErrorMessageSuccess());
   };
 };
