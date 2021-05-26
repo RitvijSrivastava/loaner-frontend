@@ -1,58 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
+import GuestRoute from "./utils/GuestRoute";
+// import PrivateRoute from "./utils/PrivateRoute";
+import SignUpContainer from "./containers/SignUpContainer";
+import SignInContainer from "./containers/SignInContainer";
+import NavBar from "./components/NavBar/NavBar";
 
-function App() {
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
+import "./App.css";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <>
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        draggable
+        pauseOnHover
+      />
+      <NavBar />
+      <Router>
+        <Switch>
+          <GuestRoute path="/signup" exact component={SignUpContainer} />
+          <GuestRoute path="/signin" exact component={SignInContainer} />
+          <GuestRoute path="/" exact component={SignInContainer} />
+        </Switch>
+      </Router>
+    </>
   );
-}
+};
 
 export default App;

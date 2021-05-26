@@ -1,5 +1,3 @@
-"use strict";
-
 import axios from "axios";
 import { API } from "../../backend";
 import {
@@ -112,6 +110,9 @@ export const signInUser = (user) => {
         if (data.error) {
           dispatch(signInFailure(data.error));
         } else {
+          if (typeof window !== undefined) {
+            localStorage.setItem("jwt", JSON.stringify(data.token));
+          }
           dispatch(signInSuccess(data.user));
         }
       })
@@ -125,20 +126,22 @@ export const signInUser = (user) => {
 export const sigOutUser = () => {
   return (dispatch) => {
     dispatch(signOutRequest());
-    axios.get(`${API}/auth/signout`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }),
-      then((response) => {
+    axios
+      .get(`${API}/auth/signout`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
         const data = response.data;
         if (data.error) {
           dispatch(signOutFailure(data.error));
         } else {
           dispatch(signOutSuccess());
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         const errorMsg = error.response.data.error;
         dispatch(signOutFailure(errorMsg));
       });

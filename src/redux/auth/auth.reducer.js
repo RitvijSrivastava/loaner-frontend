@@ -1,5 +1,3 @@
-"use strict";
-
 import {
   SIGN_UP_REQUEST,
   SIGN_IN_REQUEST,
@@ -34,7 +32,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        user: null,
+        user: "SUCCESS",
         error: "",
       };
     case SIGN_IN_SUCCESS:
