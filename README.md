@@ -23,6 +23,7 @@ Loaner has the following limitations:
 
 ## Getting Started
 
+- Replicate `.env` from `.env.example`.
 - Run `npm install` to install dependencies.
 - Run `npm start` the project on [localhost:3000](http://localhost:3000).
 
