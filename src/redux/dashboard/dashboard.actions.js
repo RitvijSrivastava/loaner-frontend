@@ -43,7 +43,12 @@ const dataFailure = (errorMsg) => {
 };
 
 /**
- * Set user directly in redux store without network callF.
+ * Set user directly in redux store without network call.
+ * Mostly use to reduce 1 network call to set user. {auth.actions} sets user in {dashboard state}
+ * and dashboard reducer is presisted.
+ * This is done like this, because we are already receiving a user object while signing in and the auth reducer is not needed after the user signs in.
+ *
+ *
  * @param {user} user - User Object
  * @returns void
  */

@@ -79,7 +79,7 @@ const removeErrorMessageSuccess = () => {
 };
 
 /**
- *  Sign up user.
+ *  Signs up user.
  * @param {object} user - User Object
  * @returns void
  */
@@ -109,7 +109,8 @@ export const signUpUser = (user) => {
 };
 
 /**
- * Sign In user. Set token in localstorage and add user to redux store.
+ * Sign In user. Set token in localstorage and adds user to redux store.
+ * It also sets user for dashboard reducer.
  * @param {object} user - User object
  * @returns void
  */
@@ -131,7 +132,7 @@ export const signInUser = (user) => {
           if (typeof window !== undefined) {
             localStorage.setItem("jwt", JSON.stringify(data.token));
           }
-          dispatch(setUser(data.user));
+          dispatch(setUser(data.user)); // Set user in using {dashboard.actions}
           dispatch(signInSuccess(data.user));
         }
       })
@@ -143,7 +144,7 @@ export const signInUser = (user) => {
 };
 
 /**
- * Sign out user
+ * Signs out user.
  * @returns void
  */
 export const signOutUser = () => {

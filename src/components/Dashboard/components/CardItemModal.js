@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import { format } from "date-fns";
 
+
 const CardItemModal = ({ loan, index, showModal, handleClose }) => {
   const onHide = () => handleClose();
 

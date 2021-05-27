@@ -9,6 +9,11 @@ const NavBar = (props) => {
     return <h3 className={`${styles.logo} pt-2`}>LOANER</h3>;
   };
 
+  /**
+   * Sign Out user and clear the localstorage.
+   * This will remove any data of the previous user.
+   * @returns void
+   */
   const signOut = () => {
     props.signOutUser();
     if (typeof window !== undefined) {

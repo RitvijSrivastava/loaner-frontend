@@ -1,12 +1,28 @@
 import React from "react";
 import { Container, Form, Button, Spinner, Row } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
-import { Link, Redirect, Route } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
-import { format } from "date-fns";
+import { format, formatDuration, intervalToDuration } from "date-fns";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+/**
+ * This function creats a form, validates and creates a new loan. It uses react-hook-form for validation.
+ * Validation Rules:
+ * Name: Must be atleast 3 characters long and contain Alphabets only.
+ * Email: Proper email format, like, test@example.com
+ * Address: Minimum length of 5 characters.
+ * Contact Number: 10 digit contact number
+ * Loan Amount: Any amount is possible
+ * Loan Start Date: Must a valid date.
+ * Loan Expiry Date: Must a valid date AFTER Loan Start date.
+ * EMI: EMI must be less than the Loan Amount and (expiryDate - startDate)* EMI must be equal to loan amount
+ * Type: Only between FIXED and FLOATING.
+ *
+ * @param {any} props - State from Redux store and Actions from {dashboard.actions}
+ * @returns void
+ */
 const CreateNewLoan = (props) => {
   const {
     register,
@@ -17,6 +33,8 @@ const CreateNewLoan = (props) => {
   } = useForm();
 
   const watchStartDate = watch("startDate");
+  const watchEMI = watch("emi");
+  const watchLoan = watch("loanAmount");
 
   /**
    * Display a 3s Toast on the top right corner of the screen
@@ -124,7 +142,7 @@ const CreateNewLoan = (props) => {
                 placeholder="Enter address..."
                 {...register("address", {
                   required: true,
-                  minLength: 3,
+                  minLength: 5,
                 })}
                 disabled={props.data.loading}
               />
@@ -136,7 +154,7 @@ const CreateNewLoan = (props) => {
                 )}
                 {errors.address && errors.address.type === "minLength" && (
                   <p className="warning" style={{ color: "red" }}>
-                    Address must of at least 3 characters.
+                    Address must of at least 5 characters.
                   </p>
                 )}
               </div>
@@ -228,34 +246,6 @@ const CreateNewLoan = (props) => {
             </Form.Group>
 
             <Form.Group>
-              {formLabel("EMI (in INR)")}
-              <Form.Control
-                aria-label="emi"
-                style={{ height: "60px" }}
-                type="number"
-                step="1"
-                placeholder="123"
-                {...register("emi", {
-                  required: true,
-                  minLength: 1,
-                })}
-                disabled={props.data.loading}
-              />
-              <div>
-                {errors.emi && errors.emi.type === "required" && (
-                  <p className="warning" style={{ color: "red" }}>
-                    This is required.
-                  </p>
-                )}
-                {errors.emi && errors.emi.type === "minLength" && (
-                  <p className="warning" style={{ color: "red" }}>
-                    Invalid EMI.
-                  </p>
-                )}
-              </div>
-            </Form.Group>
-
-            <Form.Group>
               {formLabel("Start Date")}
               <Controller
                 control={control}
@@ -303,6 +293,35 @@ const CreateNewLoan = (props) => {
                     This is required.
                   </p>
                 )}
+              </div>
+            </Form.Group>
+
+            <Form.Group>
+              {formLabel("EMI (in INR)")}
+              <Form.Control
+                aria-label="emi"
+                style={{ height: "60px" }}
+                type="number"
+                step="1"
+                placeholder="123"
+                {...register("emi", {
+                  required: true,
+                  minLength: 1,
+                })}
+                disabled={props.data.loading}
+              />
+              <div>
+                {errors.emi && errors.emi.type === "required" && (
+                  <p className="warning" style={{ color: "red" }}>
+                    This is required.
+                  </p>
+                )}
+                {errors.emi &&
+                  (errors.emi.type === "minLength" || watchEMI > watchLoan) && (
+                    <p className="warning" style={{ color: "red" }}>
+                      Invalid EMI.
+                    </p>
+                  )}
               </div>
             </Form.Group>
 

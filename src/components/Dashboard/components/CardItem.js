@@ -7,6 +7,7 @@ const CardItem = ({ loan, index }) => {
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
 
+  // Calculate how many months are left for the loan to expiry.
   const duration = formatDuration(
     intervalToDuration({
       start: new Date(),

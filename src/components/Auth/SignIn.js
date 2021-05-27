@@ -14,7 +14,7 @@ const SignIn = (props) => {
   } = useForm({});
 
   /**
-   * Display a 3s Toast on the top right corner of the screen
+   * Display a 3s Toast on the top right corner of the screen. (Dismissible)
    * @param {string} status - SUCCESS/ ERROR
    * @param {string} message - Text for the Toast Body
    */
@@ -23,13 +23,14 @@ const SignIn = (props) => {
     else toast.error(message, { toastId: "error" });
   };
 
+  /** Dispatch signInUser action from {auth.actions} */
   const onSubmit = (data) => {
     props.signInUser(data);
   };
 
   if (props.data.error) {
     showToast("ERROR", props.data.error);
-    props.removeErrorMessage();
+    props.removeErrorMessage(); // This is necessary since redundant errors may pop up on reload. (This is because errors is not removed from redux store automatically)
   }
 
   if (props.data.user) {
@@ -65,7 +66,6 @@ const SignIn = (props) => {
                       </Link>
                     </Row>
                   </Col>
-                  {/* <ErrorMessage /> */}
                   <Form onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
                       <Form.Label>

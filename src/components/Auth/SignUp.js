@@ -23,13 +23,14 @@ const SignUp = (props) => {
     else toast.error(message, { toastId: "error" });
   };
 
+  /** Dispatch signUpUser action from {auth.actions} */
   const onSubmit = (data) => {
     props.signUpUser(data);
   };
 
   if (props.data.error) {
     showToast("ERROR", props.data.error);
-    props.removeErrorMessage();
+    props.removeErrorMessage(); // This is necessary since redundant errors may pop up on reload. (This is because errors is not removed from redux store automatically)
   }
 
   if (props.data.status) {
@@ -62,7 +63,6 @@ const SignUp = (props) => {
                     </Link>
                   </Row>
                 </Col>
-                {/* <ErrorMessage /> */}
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Row>
                     <Col sm={12} md={6} lg={6}>
