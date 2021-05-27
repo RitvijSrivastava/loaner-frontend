@@ -227,6 +227,7 @@ const CreateNewLoan = (props) => {
                 placeholder="12345"
                 {...register("loanAmount", {
                   required: true,
+                  min: 1,
                   minLength: 1,
                 })}
                 disabled={props.data.loading}
@@ -237,11 +238,13 @@ const CreateNewLoan = (props) => {
                     This is required.
                   </p>
                 )}
-                {errors.loanAmount && errors.loanAmount.type === "minLength" && (
-                  <p className="warning" style={{ color: "red" }}>
-                    Invalid Loan amount.
-                  </p>
-                )}
+                {errors.loanAmount &&
+                  (errors.loanAmount.type === "minLength" ||
+                    errors.loanAmount.type === "min") && (
+                    <p className="warning" style={{ color: "red" }}>
+                      Invalid Loan amount.
+                    </p>
+                  )}
               </div>
             </Form.Group>
 
@@ -306,6 +309,7 @@ const CreateNewLoan = (props) => {
                 placeholder="123"
                 {...register("emi", {
                   required: true,
+                  min: 1,
                   minLength: 1,
                 })}
                 disabled={props.data.loading}
@@ -317,7 +321,10 @@ const CreateNewLoan = (props) => {
                   </p>
                 )}
                 {errors.emi &&
-                  (errors.emi.type === "minLength" || watchEMI > watchLoan) && (
+                  (errors.emi.type === "minLength" ||
+                    errors.emi.type === "min" ||
+                    watchEMI > watchLoan ||
+                    watchEMI <= 0) && (
                     <p className="warning" style={{ color: "red" }}>
                       Invalid EMI.
                     </p>
