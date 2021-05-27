@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Nav, Navbar } from "react-bootstrap";
 import { Redirect } from "react-router";
 import styles from "./NavBar.module.css";
-import { isAuthenticated } from "../../utils/helper";
 
 const NavBar = (props) => {
   // Display logo

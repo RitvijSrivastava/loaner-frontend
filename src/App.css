@@ -37,3 +37,12 @@
     transform: rotate(360deg);
   }
 }
+
+.card {
+  transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translate3d(0px, -10px, 0px);
+  box-shadow: 5px 5px 5px 5px grey;
+}

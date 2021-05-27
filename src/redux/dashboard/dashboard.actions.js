@@ -1,23 +1,16 @@
 import axios from "axios";
 import { API } from "../../backend";
 import {
-  LOAN_DATA_REQUEST,
-  LOAN_DATA_SUCCESS,
-  LOAN_DATA_FAILURE,
-  USER_DATA_REQUEST,
+  DATA_REQUEST,
+  DATA_FAILURE,
   USER_DATA_SUCCESS,
-  USER_DATA_FAILURE,
+  GET_LOAN_DATA_SUCCESS,
+  CREATE_LOAN_DATA_SUCCESS,
 } from "./dashboard.types";
 
-const userDataRequest = () => {
+const dataRequest = () => {
   return {
-    type: USER_DATA_REQUEST,
-  };
-};
-
-const loanDataRequest = () => {
-  return {
-    type: LOAN_DATA_REQUEST,
+    type: DATA_REQUEST,
   };
 };
 
@@ -28,23 +21,23 @@ const userDataSuccess = (user) => {
   };
 };
 
-const loanDataSuccess = (loans) => {
+const getLoanDataSuccess = (loans) => {
   return {
-    type: LOAN_DATA_SUCCESS,
+    type: GET_LOAN_DATA_SUCCESS,
     payload: loans,
   };
 };
 
-const userDataFailure = (errorMsg) => {
+const createLoanDataSuccess = (loans) => {
   return {
-    type: USER_DATA_FAILURE,
-    payload: errorMsg,
+    type: CREATE_LOAN_DATA_SUCCESS,
+    payload: loans,
   };
 };
 
-const loanDataFailure = (errorMsg) => {
+const dataFailure = (errorMsg) => {
   return {
-    type: LOAN_DATA_FAILURE,
+    type: DATA_FAILURE,
     payload: errorMsg,
   };
 };
@@ -67,7 +60,7 @@ export const setUser = (user) => {
  */
 export const getLoans = (userId) => {
   return (dispatch) => {
-    dispatch(loanDataRequest());
+    dispatch(dataRequest());
     axios
       .get(`${API}/db/getLoansByUserId`, {
         params: {
@@ -81,14 +74,14 @@ export const getLoans = (userId) => {
       .then((response) => {
         const data = response.data;
         if (data.error) {
-          dispatch(loanDataFailure(data.error));
+          dispatch(dataFailure(data.error));
         } else {
-          dispatch(loanDataSuccess(data.loans));
+          dispatch(getLoanDataSuccess(data.loans));
         }
       })
       .catch((error) => {
         const errorMsg = error.response.data.error;
-        dispatch(loanDataFailure(errorMsg));
+        dispatch(dataFailure(errorMsg));
       });
   };
 };
@@ -100,7 +93,7 @@ export const getLoans = (userId) => {
  */
 export const createNewLoan = (loan) => {
   return (dispatch) => {
-    dispatch(loanDataRequest());
+    dispatch(dataRequest());
     axios
       .post(`${API}/db/createNewLoan`, JSON.stringify(loan), {
         headers: {
@@ -111,14 +104,14 @@ export const createNewLoan = (loan) => {
       .then((response) => {
         const data = response.data;
         if (data.error) {
-          dispatch(loanDataFailure(data.error));
+          dispatch(dataFailure(data.error));
         } else {
-          dispatch(loanDataSuccess(data.loans));
+          dispatch(createLoanDataSuccess(data.loans));
         }
       })
       .catch((error) => {
         const errorMsg = error.response.data.error;
-        dispatch(loanDataFailure(errorMsg));
+        dispatch(dataFailure(errorMsg));
       });
   };
 };

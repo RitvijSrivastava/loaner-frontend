@@ -5,6 +5,7 @@ import PrivateRoute from "./utils/PrivateRoute";
 import SignUpContainer from "./containers/SignUpContainer";
 import SignInContainer from "./containers/SignInContainer";
 import DashboardContainer from "./containers/DashboardContainer";
+import CreateNewLoanContainer from "./containers/CreateNewLoanContainer";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -34,6 +35,11 @@ const App = () => {
             path="/dashboard"
             exact
             component={DashboardContainer}
+          />
+          <PrivateRoute
+            path="/createNewLoan"
+            exact
+            component={CreateNewLoanContainer}
           />
         </Switch>
       </Router>
